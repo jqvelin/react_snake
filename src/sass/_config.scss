@@ -1,0 +1,21 @@
+@mixin center(){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin fullscreen(){
+    width: 100vw;
+    height: 100vh;
+}
+
+$snake_color: rgba(70,115,230,255);
+$dark_field_cell_color: rgba(150,210,75,255);
+$light_field_cell_color: rgba(170,215,85,255);
+
+* {
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}

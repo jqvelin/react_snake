@@ -1,0 +1,74 @@
+@import './config';
+body {
+    @include center;
+    @include fullscreen;
+}
+
+.main_layout {
+    @include center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.cell {
+    position: relative;
+    width: 64px;
+    @include center;
+    aspect-ratio: 1;
+    &.light {
+        background: $light_field_cell_color;
+    }
+    &.dark {
+        background: $dark_field_cell_color;
+    }
+    
+    &.snake_body {
+        background: $snake_color;
+    }
+}
+
+.apple {
+    &::after{
+        position: absolute;
+        content: '';
+        width: 56px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: rgb(202, 44, 44);
+    }
+}
+
+
+.field {
+    display: grid;
+    grid-template-columns: repeat(var(--columns_qty), 1fr);
+    position: relative;
+}
+
+.try_again_modal {
+    @include center;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+    button {
+        padding: 1em;
+        font-weight: bold;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .cell {
+        width: 38px;
+    }
+    .apple {
+        &::after {
+            width: 28px;
+        }
+    }
+}
