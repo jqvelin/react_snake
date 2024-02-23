@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Field } from '../models/Field';
 import CellComponent from './CellComponent';
 import TryAgainComponent from './TryAgainComponent';
+import IntroductionComponent from './IntroductionComponent';
 
 const FieldComponent = () => {
     const [field, setField] = useState(new Field(10))
     const [gameRunning, setGameRunning] = useState(true)
+    const [introduction, setIntroduction] = useState(true)
     const intervalID = useRef<null | ReturnType<typeof setInterval>>(null)
 
     const direction = useRef(1)
@@ -13,9 +15,9 @@ const FieldComponent = () => {
     let ignoreRestart = false
     let ignoreInterval = false
     useEffect(() => {
-        if (!ignoreRestart) restart()
+        if (!introduction && !ignoreRestart) restart()
         return () => {ignoreRestart = true}
-    }, [])
+    }, [introduction])
     useEffect(() => {
         if (!ignoreInterval) {
         intervalID.current && clearInterval(intervalID.current)
@@ -65,7 +67,9 @@ const FieldComponent = () => {
 
     return (
         <>
-        {!gameRunning && <TryAgainComponent restart={restart}/>}
+        {introduction ? <IntroductionComponent setIntroduction={setIntroduction}/> :
+        !gameRunning && <TryAgainComponent restart={restart}/>
+        }
         <div className="field">
             {field.cells.map(cell => 
                 <CellComponent changeDirection={changeDirection} key={cell.position} cell={cell}/>

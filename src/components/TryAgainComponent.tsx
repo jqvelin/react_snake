@@ -6,7 +6,7 @@ interface TryAgainComponentProps {
 
 const TryAgainComponent: FC<TryAgainComponentProps> = ({restart}) => {
     return (
-        <div className="try_again_modal">
+        <div className="modal">
             <h1>Game Lost!</h1>
             <button onClick={restart}>Try Again</button>
         </div>

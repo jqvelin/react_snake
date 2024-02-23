@@ -4,6 +4,7 @@ export class SnakeBody {
     coords: number[] = [53, 52, 51, 50]
     field: Field
     speed: number = 1
+    isFreeToMove: boolean = true
 
     constructor(field: Field){
         this.field = field
@@ -13,9 +14,9 @@ export class SnakeBody {
         const nextHeadPosition = this.coords[0] + direction
         this.coords.unshift(nextHeadPosition)
         if (this.field.cells[nextHeadPosition].hasApple) {
-            this.field.cells[nextHeadPosition].hasApple = false
-            this.speed *= 0.95
             this.field.spawnApple()
+            console.log(this.field.cells[nextHeadPosition].hasApple)
+            this.speed *= 0.95
             return
         }
         this.coords.pop()

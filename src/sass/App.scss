@@ -2,6 +2,7 @@
 body {
     @include center;
     @include fullscreen;
+    background: linear-gradient(45deg, white, lightgreen);
 }
 
 .main_layout {
@@ -46,16 +47,29 @@ body {
     position: relative;
 }
 
-.try_again_modal {
+.modal {
     @include center;
+    text-align: center;
     flex-direction: column;
+    min-width: 50vw;
+    max-width: 80vw;
+    min-height: 40vh;
+    max-height: 60vh;
     position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(3px);
+    border-radius: 1rem;
+    &::before{
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    
     button {
         padding: 1em;
         font-weight: bold;
@@ -70,5 +84,10 @@ body {
         &::after {
             width: 28px;
         }
+    }
+
+    .modal {
+        width: 300px;
+        font-size: 14px;
     }
 }

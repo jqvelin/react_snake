@@ -18,7 +18,7 @@ const CellComponent: FC<CellComponentProps> = ({cell, changeDirection}) => {
         else if (cell.position - cell.field.snake.coords[0] >= 10) {
             return 'KeyS'
         }
-        else if (cell.position - cell.field.snake.coords[0] < -10){
+        else if (cell.position - cell.field.snake.coords[0] <= -10){
             return 'KeyW'
         }
     }

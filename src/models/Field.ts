@@ -37,11 +37,10 @@ export class Field {
 
     spawnApple(){
         this.cells.forEach(cell => cell.hasApple = false)
-        let randomCell
-        do {
+        let randomCell = Math.floor(Math.random() * this.size ** 2)
+        while(this.cells[randomCell].hasSnakeBody){
             randomCell = Math.floor(Math.random() * this.size ** 2)
         }
-        while(this.cells[randomCell].hasSnakeBody) 
         this.cells[randomCell].hasApple = true
     }
 
