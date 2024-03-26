@@ -4,10 +4,11 @@ import { Cell } from '../models/Cell';
 
 interface CellComponentProps {
     cell: Cell;
+    direction: number;
     changeDirection: (e: string | undefined) => void
 }
 
-const CellComponent: FC<CellComponentProps> = ({cell, changeDirection}) => {
+const CellComponent: FC<CellComponentProps> = ({cell, direction, changeDirection}) => {
     function calculateDirection(){
         if (cell.position - cell.field.snake.coords[0] < 10 && cell.position - cell.field.snake.coords[0] > 0){
             return 'KeyD'
@@ -23,7 +24,12 @@ const CellComponent: FC<CellComponentProps> = ({cell, changeDirection}) => {
         }
     }
     return (
-        <div onPointerDown={() => changeDirection(calculateDirection())} className={['cell', cell.hasApple ? 'apple' : '', cell.color === Colors.LIGHT ? 'light' : 'dark', cell.hasSnakeBody ? 'snake_body' : ''].join(' ')}>
+        <div onPointerDown={() => changeDirection(calculateDirection())} className={['cell', cell.hasApple ? 'apple' : '', cell.color === Colors.LIGHT ? 'light' : 'dark', cell.hasSnakeBody ? 'snake_body' : '', cell.field.snake.coords[0] === cell.position ? 'head' : ''].join(' ')} data-direction={direction}>
+            {cell.field.snake.coords[0] === cell.position && 
+                <div className='eyes' data-direction={direction}>
+                    <div className="eye left"></div>
+                    <div className="eye right"></div>
+                </div>}
         </div>
     );
 };

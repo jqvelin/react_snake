@@ -72,7 +72,7 @@ const FieldComponent = () => {
         }
         <div className="field">
             {field.cells.map(cell => 
-                <CellComponent changeDirection={changeDirection} key={cell.position} cell={cell}/>
+                <CellComponent direction={direction.current} changeDirection={changeDirection} key={cell.position} cell={cell}/>
             )}
         </div>
         </>
