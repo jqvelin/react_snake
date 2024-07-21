@@ -1,63 +1,61 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Field } from '../models/Field';
 import CellComponent from './CellComponent';
-import TryAgainComponent from './TryAgainComponent';
 import IntroductionComponent from './IntroductionComponent';
+import TryAgainComponent from './TryAgainComponent';
+
+const INTERVAL_TIME = 1000
 
 const FieldComponent = () => {
-    const [field, setField] = useState(new Field(10))
-    const [gameRunning, setGameRunning] = useState(true)
-    const [introduction, setIntroduction] = useState(true)
+    const [field, setField] = useState(new Field())
+    const [gameState, setGameState] = useState<'intro' | 'running' | 'lost'>('intro')
     const intervalID = useRef<null | ReturnType<typeof setInterval>>(null)
 
     const direction = useRef(1)
-    let intervalTime = 1000
-    let ignoreRestart = false
-    let ignoreInterval = false
+
     useEffect(() => {
-        if (!introduction && !ignoreRestart) restart()
-        return () => {ignoreRestart = true}
-    }, [introduction])
+        restart()
+    }, [])
+
     useEffect(() => {
-        if (!ignoreInterval) {
         intervalID.current && clearInterval(intervalID.current)
         intervalID.current = setInterval(() => {
-            if (!gameRunning) return
+            if (gameState !== 'running') return
             if (!field.snake.canMove(direction.current)) {
-                setGameRunning(false)
+                setGameState('lost')
                 return
             }
             const nextField = field.getFieldCopy()
             nextField.snake.move(direction.current)
             nextField.drawSnake()
             setField(nextField)
-        }, intervalTime * field.snake.speed)}
-        return () => {ignoreInterval = true}
-    }, [field.snake.speed, gameRunning])
-    
-    function restart(){
-        document.querySelector('html')?.style.setProperty('--columns_qty', `${field.size}`)
+        }, INTERVAL_TIME * field.snake.speed)
+    }, [field.snake.speed, gameState])
+
+    function restart() {
         document.addEventListener('keydown', e => changeDirection(e.code))
         direction.current = 1
-        const nextField = field
+        const nextField = new Field()
         nextField.initCells()
         nextField.initSnake()
         nextField.spawnApple()
         setField(nextField)
-        setGameRunning(true)
-        
     }
 
-    function changeDirection(dir: string | undefined){
-        switch (dir){
+    function endIntroduction() {
+        setGameState('running')
+    }
+
+    function changeDirection(dir: string | undefined) {
+        switch (dir) {
             case 'KeyD':
                 direction.current = 1
                 break;
             case 'KeyW':
-                direction.current = -field.size
+                direction.current = -10
                 break;
             case 'KeyS':
-                direction.current = field.size
+                direction.current = 10
                 break;
             case 'KeyA':
                 direction.current = -1
@@ -65,18 +63,16 @@ const FieldComponent = () => {
         }
     }
 
-    return (
-        <>
-        {introduction ? <IntroductionComponent setIntroduction={setIntroduction}/> :
-        !gameRunning && <TryAgainComponent restart={restart}/>
-        }
+    return (<>
         <div className="field">
-            {field.cells.map(cell => 
-                <CellComponent direction={direction.current} changeDirection={changeDirection} key={cell.position} cell={cell}/>
+            {field.cells.map(cell =>
+                <CellComponent direction={direction.current} changeDirection={changeDirection} key={cell.position} cell={cell} />
             )}
         </div>
-        </>
-    );
+        <IntroductionComponent endIntroduction={endIntroduction} />
+        {gameState === "lost" && <TryAgainComponent restart={() => { restart(); setGameState("running") }} />}
+    </>
+    )
 };
 
 export default FieldComponent;
