@@ -35,11 +35,11 @@ export class Field {
 
     spawnApple(){
         this.cells.forEach(cell => cell.hasApple = false)
-        let randomCell = Math.floor(Math.random() * 10 ** 2)
-        while(this.cells[randomCell].hasSnakeBody){
-            randomCell = Math.floor(Math.random() * 10 ** 2)
-        }
-        this.cells[randomCell].hasApple = true
+        const emptyCellPositions = this.cells
+        .filter(cell => !cell.hasSnakeBody)
+        .map(cell => cell.position)
+        const randomCellPosition = emptyCellPositions[Math.floor(Math.random() * emptyCellPositions.length)]
+        this.cells[randomCellPosition].hasApple = true
     }
 
     getFieldCopy(){
